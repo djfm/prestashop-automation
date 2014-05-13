@@ -17,6 +17,12 @@ describe 'Back Office Primitives' do
 		ps.logout_of_back_office
 	end
 
+	describe 'Creating carriers' do
+		it 'should work in the simplest case' do
+			ps.create_carrier :name => 'Turtle Bob'
+		end
+	end
+
 	describe 'Creating taxes' do
 
 		it 'should create a complicated tax group' do
