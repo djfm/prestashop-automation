@@ -17,6 +17,12 @@ describe 'Back Office Primitives' do
 		ps.logout_of_back_office
 	end
 
+	describe 'Creating a Cart Rule' do
+		it 'should work with one product' do
+			ps.create_cart_rule :product_id => 1, :amount => '10%' 
+		end
+	end
+
 	describe 'Creating carriers' do
 		it 'should work in the simplest case' do
 			ps.create_carrier :name => 'Turtle Bob'
