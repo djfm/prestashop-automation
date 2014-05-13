@@ -3,6 +3,8 @@ require 'capybara'
 require 'capybara/rspec'
 
 require_relative 'actions/general.rb'
+require_relative 'actions/settings.rb'
+
 require_relative 'helpers/general.rb'
 
 module PrestaShopAutomation
@@ -14,26 +16,31 @@ module PrestaShopAutomation
 
 		include PrestaShopAutomation::GeneralHelpers
 		include PrestaShopAutomation::GeneralActions
+		include PrestaShopAutomation::SettingsActions
 
 
 		def initialize options
 
 			@front_office_url = options[:front_office_url]
 			@back_office_url  = options[:back_office_url]
-			@admin_email = options[:admin_email] or 'pub@prestashop.com'
-			@admin_password = options[:admin_password] or '123456789'
-			@default_customer_email = options[:default_customer_email] or 'pub@prestashop.com'
-			@default_customer_password = options[:default_customer_password] or '123456789'
-			@database_user = options[:database_user] or 'root'
-			@database_password = options[:database_password] or ''
+			@admin_email = options[:admin_email] || 'pub@prestashop.com'
+			@admin_password = options[:admin_password] || '123456789'
+			@default_customer_email = options[:default_customer_email] || 'pub@prestashop.com'
+			@default_customer_password = options[:default_customer_password] || '123456789'
+			@database_user = options[:database_user] || 'root'
+			@database_password = options[:database_password] || ''
 			@database_name = options[:database_name]
-			@database_prefix = options[:database_prefix] or 'ps_'
-			@database_port = options[:database_port] or '3306'
+			@database_prefix = options[:database_prefix] || 'ps_'
+			@database_port = options[:database_port] || '3306'
 			@database_host = options[:database_host]
 			@version = options[:version]
 
 			super :selenium
 		end
+
+        def quit_browser
+            driver.browser.quit
+        end
 
 	end
 end

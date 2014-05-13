@@ -14,8 +14,16 @@ module PrestaShopAutomation
 			end
 		end
 
+		def click selector
+			find(selector).click
+		end
+
 		def expect_to matcher
 			expect(self).to matcher
+		end
+
+		def standard_success_check
+			expect_to have_selector '.alert.alert-success'
 		end
 	end
 end
