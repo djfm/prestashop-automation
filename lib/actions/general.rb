@@ -6,7 +6,7 @@ module PrestaShopAutomation
 			fill_in "passwd", :with => @admin_password
 			click_label_for 'stay_logged_in'
 			click_button_named 'submitLogin', :first => true
-			expect(self).to have_selector('#header_logout', :visible => false)
+			expect_to have_selector('#header_logout', :visible => false)
 		end
 	end
 end

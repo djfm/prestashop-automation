@@ -1,4 +1,3 @@
-require 'rspec'
 require 'rspec-expectations'
 require 'capybara'
 require 'capybara/rspec'
@@ -6,18 +5,16 @@ require 'capybara/rspec'
 require_relative 'actions/general.rb'
 require_relative 'helpers/general.rb'
 
-RSpec.configure do |config|
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-end
-
 module PrestaShopAutomation
 	class PrestaShop < Capybara::Session
 
+        include RSpec::Expectations
+        include RSpec::Matchers
+        include Capybara::RSpecMatchers
+
 		include PrestaShopAutomation::GeneralHelpers
 		include PrestaShopAutomation::GeneralActions
-		include Capybara::RSpecMatchers
+
 
 		def initialize options
 
