@@ -18,8 +18,14 @@ describe 'Back Office Primitives' do
 	end
 
 	describe 'Creating taxes' do
-		it 'should create a tax' do
-			ps.create_tax :name => 'Some Tax', :rate => '20'
+
+		it 'should create a complicated tax group' do
+			ps.create_tax_group_from_rate '10 + 9.6'
+		end
+
+		it 'should create a tax and a tax group' do
+			tax_id = ps.create_tax :name => 'Some Tax', :rate => '20'
+			ps.create_tax_group :name => 'Test Tax Group', :taxes => [{:tax_id => tax_id}]
 		end
 	end
 
