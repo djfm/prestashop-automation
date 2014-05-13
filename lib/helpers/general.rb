@@ -32,6 +32,10 @@ module PrestaShopAutomation
 			expect(self).to matcher
 		end
 
+		def expect_not_to matcher
+			expect(self).not_to matcher
+		end
+
 		def standard_success_check
 			expect_to have_selector '.alert.alert-success'
 		end

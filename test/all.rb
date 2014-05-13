@@ -17,6 +17,23 @@ describe 'Back Office Primitives' do
 		ps.logout_of_back_office
 	end
 
+	describe 'Creating taxes' do
+		it 'should create a tax' do
+			ps.create_tax :name => 'Some Tax', :rate => '20'
+		end
+	end
+
+	describe 'Creating products' do
+
+		it 'should work with a specific price' do
+			ps.create_product :name => 'Petit Sachet de Vis Cruciformes Pas Cher', :price => '1.92', :specific_price => 'minus 1 tax included'
+		end
+
+		it 'should work with just a price and a name' do
+			ps.create_product :name => 'Petit Sachet de Vis Cruciformes', :price => '1.85'
+		end
+	end
+
 	describe 'Changing a few settings' do
 		it 'should enable OPC' do
 			ps.set_order_process_type :opc

@@ -15,79 +15,6 @@ Capybara.save_and_open_page_path = "screenshots"
 module PrestaShopHelpers
 	include Capybara::DSL
 
-	def set_gift_wrapping_option on, options
-		visit '/admin-dev'
-		find('#maintab-AdminParentPreferences').hover
-		find('#subtab-AdminOrderPreferences a').click
-		if on
-			click_label_for 'PS_GIFT_WRAPPING_on'
-			find('input[name="PS_GIFT_WRAPPING_PRICE"]').set options[:price]
-			within '#PS_GIFT_WRAPPING_TAX_RULES_GROUP' do
-				find("option[value='#{options[:tax_group_id] || 0}']").click
-			end
-			if options[:recycling_option]
-				click_label_for 'PS_RECYCLABLE_PACK_on'
-			else
-				click_label_for 'PS_RECYCLABLE_PACK_off'
-			end
-		else
-			click_label_for 'PS_GIFT_WRAPPING_off'
-		end
-		first('button[name="submitOptionsconfiguration"]').click
-		expect(page).to have_selector '.alert.alert-success'
-	end
-
-	def create_product options
-		visit '/admin-dev'
-		find('#maintab-AdminCatalog').hover
-		find('#subtab-AdminProducts a').click
-		find('#page-header-desc-product-new_product').click
-
-		fill_in 'name_1', :with => options[:name]
-		sleep 2
-		find('#link-Seo').click
-		page.should_not have_field('link_rewrite_1', with: "")
-
-		find('#link-Prices').click
-		fill_in 'priceTE', :with => options[:price]
-		if options[:tax_group_id]
-			within '#id_tax_rules_group' do
-				find("option[value='#{options[:tax_group_id]}']").click
-			end
-		end
-
-		if sp = options[:specific_price]
-			find('button[name=submitAddproductAndStay]').click
-			expect(page).to have_selector '.alert.alert-success'
-			sleep 2
-
-			find('#show_specific_price').click
-			if m = /^minus\s+(\d+(?:\.\d+)?)\s+tax\s+included$/.match(sp.strip)
-				within '#sp_reduction_type' do
-					find('option[value="amount"]').click
-				end
-				fill_in 'sp_reduction', :with => m[1]
-			elsif m = /^minus\s+(\d+(?:\.\d+)?)\s*%$/.match(sp.strip)
-				find('option[value="percentage"]').click
-				fill_in 'sp_reduction', :with => m[1]
-			else
-				throw "Invalid specific price: #{sp}"
-			end
-		end
-
-		first('button[name=submitAddproductAndStay]').click
-		expect(page).to have_selector '.alert.alert-success'
-		sleep 2
-
-		# allow ordering if out of stock
-		find('#link-Quantities').click
-		choose 'out_of_stock_2'
-		first('button[name=submitAddproductAndStay]').click
-		expect(page).to have_selector '.alert.alert-success'
-
-		return page.current_url[/\bid_product=(\d+)/, 1].to_i
-	end
-
 	@@products = {}
 	def get_or_create_product options
 
@@ -410,20 +337,6 @@ module PrestaShopHelpers
 			find('#add_to_cart button').click
 			sleep 1
 		end
-	end
-
-	def set_order_process_type value
-		visit '/admin-dev'
-		find('#maintab-AdminParentPreferences').hover
-		find('#subtab-AdminOrderPreferences a').click
-		within '#PS_ORDER_PROCESS_TYPE' do
-			v = {:five_steps => 0, :opc => 1}[value]
-			find("option[value='#{v}']").click
-		end
-		within '#configuration_fieldset_general' do
-			find('button[name="submitOptionsconfiguration"]').click
-		end
-		expect(page).to have_selector '.alert.alert-success'
 	end
 
 	def order_current_cart_5_steps options

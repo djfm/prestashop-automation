@@ -3,6 +3,8 @@ require 'capybara'
 
 require_relative 'actions/general.rb'
 require_relative 'actions/settings.rb'
+require_relative 'actions/products.rb'
+require_relative 'actions/taxes.rb'
 
 require_relative 'helpers/general.rb'
 
@@ -16,7 +18,8 @@ module PrestaShopAutomation
 		include PrestaShopAutomation::GeneralHelpers
 		include PrestaShopAutomation::GeneralActions
 		include PrestaShopAutomation::SettingsActions
-
+        include PrestaShopAutomation::ProductsActions
+        include PrestaShopAutomation::TaxesActions
 
 		def initialize options
 
