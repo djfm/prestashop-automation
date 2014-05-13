@@ -1,6 +1,5 @@
 require 'rspec-expectations'
 require 'capybara'
-require 'capybara/rspec'
 
 require_relative 'actions/general.rb'
 require_relative 'actions/settings.rb'
@@ -12,7 +11,7 @@ module PrestaShopAutomation
 
         include RSpec::Expectations
         include RSpec::Matchers
-        include Capybara::RSpecMatchers
+        #include Capybara::RSpecMatchers
 
 		include PrestaShopAutomation::GeneralHelpers
 		include PrestaShopAutomation::GeneralActions
@@ -38,7 +37,7 @@ module PrestaShopAutomation
 			super :selenium
 		end
 
-        def quit_browser
+        def quit
             driver.browser.quit
         end
 

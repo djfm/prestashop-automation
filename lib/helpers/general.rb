@@ -1,6 +1,10 @@
 module PrestaShopAutomation
 	module GeneralHelpers
 
+		def onoff val
+			val ? 'on' : 'off'
+		end
+
 		def click_label_for id
 			find("label[for='#{id}']").click
 		end
@@ -11,6 +15,12 @@ module PrestaShopAutomation
 				first(selector).click
 			else
 				find(selector).click
+			end
+		end
+
+		def select_by_value select_selector, value
+			within select_selector do
+				find("option[value='#{value}']").click
 			end
 		end
 
