@@ -19,7 +19,7 @@ describe 'Back Office Primitives' do
 
 	describe 'Creating a Cart Rule' do
 		it 'should work with one product' do
-			ps.create_cart_rule :product_id => 1, :amount => '10%' 
+			ps.create_cart_rule :name => 'YiiHaaa', :product_id => 1, :amount => '10%' 
 		end
 	end
 

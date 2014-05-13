@@ -82,7 +82,7 @@ module PrestaShopAutomation
 
 			find('#desc-cart_rule-save-and-stay').click
 			standard_success_check
-			id = page.current_url[/\bid_cart_rule=(\d+)/, 1].to_i
+			id = current_url[/\bid_cart_rule=(\d+)/, 1].to_i
 			id.should be > 0
 			return id
 		end
