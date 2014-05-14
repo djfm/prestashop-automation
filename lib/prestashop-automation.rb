@@ -1,5 +1,6 @@
 require 'rspec-expectations'
 require 'capybara'
+require 'shellwords'
 
 require_relative 'actions/general.rb'
 require_relative 'actions/settings.rb'
@@ -54,6 +55,40 @@ module PrestaShopAutomation
         def quit
             driver.browser.quit
         end
+
+		def dump_database target
+			if database_exists
+				cmd = "mysqldump -uroot "
+				if @database_password.to_s.strip != ''
+					cmd += "-p#{Shellwords.shellescape @database_password} "
+				end
+				cmd += "-h#{Shellwords.shellescape @database_host} "
+				cmd += "-P#{@database_port} "
+				cmd += "#{Shellwords.shellescape @database_name} "
+				cmd += "> #{Shellwords.shellescape target}"
+				`#{cmd}`
+				if !$?.success?
+					throw "Could not dump database!"
+				end
+				return true
+			else
+				return false
+			end
+		end
+
+		def load_database src
+			prepare_database
+			cmd = "mysql -uroot "
+			if @database_password.to_s.strip != ''
+				cmd += "-p#{Shellwords.shellescape @database_password} "
+			end
+			cmd += "-h#{Shellwords.shellescape @database_host} "
+			cmd += "-P#{@database_port} "
+			cmd += "#{Shellwords.shellescape @database_name} "
+			cmd += "< #{Shellwords.shellescape src}"
+			`#{cmd}`
+			return $?.success?
+		end
 
 	end
 end

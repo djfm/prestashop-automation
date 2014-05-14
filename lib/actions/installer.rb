@@ -66,10 +66,14 @@ module PrestaShopAutomation
 			client.query("DROP DATABASE IF EXISTS #{safe_database_name}")
 		end
 
+		def database_exists
+			count = client.query("SHOW DATABASES LIKE '#{client.escape @database_name}'").count
+			expect(count).to be <= 1
+			count == 1
+		end
+
 		def prepare_database
-			results = client.query("SHOW DATABASES LIKE '#{client.escape @database_name}'")
-			expect(results.count).to be <= 1
-			if results.count == 0
+			if !database_exists
 				client.query "CREATE DATABASE #{safe_database_name}"
 			else
 				tables = client.query("SHOW TABLES IN #{safe_database_name} LIKE '#{client.escape @database_prefix}%'")
