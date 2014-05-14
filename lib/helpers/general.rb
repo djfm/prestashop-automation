@@ -24,6 +24,18 @@ module PrestaShopAutomation
 			end
 		end
 
+		def select_by_value_jqChosen select_selector, value
+			options = Hash[all("#{select_selector} option", :visible => false).to_a.each_with_index.map do |option, i|
+				[option['value'], i]
+			end]
+			expect(options[value]).not_to be nil
+			container = find("#{select_selector} + .chosen-container")
+			container.click
+			within container do
+				click "li[data-option-array-index='#{options[value]}']"
+			end
+		end
+
 		def click selector
 			find(selector).click
 		end
@@ -45,6 +57,18 @@ module PrestaShopAutomation
 				super base
 			else
 				super base.sub(/\/\s*/, '') + rest.sub(/^\s*\//, '')
+			end
+		end
+
+		def wait_until options = {}, &block
+			elapsed = 0
+			dt = options[:interval] || 1
+			timeout = options[:timeout] || 60
+			until (ok = yield) or (elapsed > timeout)
+				elapsed += sleep dt
+			end
+			unless ok
+				throw "Timeout exceeded!"
 			end
 		end
 	end

@@ -1,18 +1,34 @@
 require_relative '../lib/prestashop.rb'
 
 ps = PrestaShopAutomation::PrestaShop.new({
-	:back_office_url => 'http://partners16.fmdj.fr/admin-dev/',
-	:front_office_url => 'http://partners16.fmdj.fr/',
+	:back_office_url => 'http://localhost/1.6/admin-dev/',
+	:front_office_url => 'http://localhost/1.6/',
+	:installer_url => 'http://localhost/1.6/install-dev',
 	:admin_email => 'pub@prestashop.com',
-	:admin_password => '123456789'
+	:admin_password => '123456789',
+	:database_name => '1.6'
 })
+
+describe 'Installing' do
+	it 'should use the UI to prepare the database' do
+		ps.drop_database
+		ps.install
+		ps.reset!
+	end
+
+	it 'should prepare the database externally' do
+		ps.drop_database
+		ps.install :prepare_database => true
+		ps.reset!
+	end
+end
 
 describe 'Front Office Primitives' do
 
 	before :all do
 		ps.login_to_front_office
 		ps.login_to_back_office
-		ps.set_friendly_urls true
+		ps.set_friendly_urls false
 	end
 
 	after :all do
