@@ -86,5 +86,13 @@ module PrestaShopAutomation
 			id.should be > 0
 			return id
 		end
+
+		def delete_cart_rule id
+			goto_admin_tab 'AdminCartRules'
+			url = first("a[href*='&deletecart_rule&']", :visible => false)['href']
+			url.gsub! /\bid_cart_rule=\d+/, "id_cart_rule=#{id}"
+			visit url
+			standard_success_check
+		end
 	end
 end

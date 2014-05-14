@@ -13,6 +13,14 @@ module PrestaShopAutomation
 			}
 		end
 
+		def goto_back_office
+			visit @back_office_url
+		end
+
+		def goto_front_office
+			visit @front_office_url
+		end
+
 		def logout_of_back_office
 			visit @back_office_url
 			click '#employee_infos a'

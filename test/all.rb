@@ -1,11 +1,45 @@
 require_relative '../lib/prestashop.rb'
 
 ps = PrestaShopAutomation::PrestaShop.new({
-	:back_office_url => 'http://localhost/1.6/admin-dev/',
-	:front_office_url => 'http://localhost/1.6/',
+	:back_office_url => 'http://partners16.fmdj.fr/admin-dev/',
+	:front_office_url => 'http://partners16.fmdj.fr/',
 	:admin_email => 'pub@prestashop.com',
 	:admin_password => '123456789'
 })
+
+describe 'Front Office Primitives' do
+
+	before :all do
+		ps.login_to_front_office
+		ps.login_to_back_office
+		ps.set_friendly_urls true
+	end
+
+	after :all do
+		ps.logout_of_front_office
+		ps.logout_of_back_office
+	end
+
+	it 'should add product 1 to cart and make an order in OPC' do
+		ps.goto_back_office
+		ps.set_order_process_type :opc
+		ps.goto_front_office
+		ps.add_product_to_cart 1
+		order_id = ps.order_current_cart_opc :carrier => 'My carrier'
+		ps.goto_back_office
+		ps.validate_order id: order_id
+	end
+
+	it 'should add product 1 to cart and make an order in 5 steps checkout' do
+		ps.goto_back_office
+		ps.set_order_process_type :five_steps
+		ps.goto_front_office
+		ps.add_product_to_cart 1
+		order_id = ps.order_current_cart_5_steps :carrier => 'My carrier'
+		ps.goto_back_office
+		ps.validate_order id: order_id
+	end
+end
 
 describe 'Back Office Primitives' do
 
@@ -17,9 +51,10 @@ describe 'Back Office Primitives' do
 		ps.logout_of_back_office
 	end
 
-	describe 'Creating a Cart Rule' do
+	describe 'Creating And Deleting a Cart Rule' do
 		it 'should work with one product' do
-			ps.create_cart_rule :name => 'YiiHaaa', :product_id => 1, :amount => '10%' 
+			id = ps.create_cart_rule :name => 'YiiHaaa', :product_id => 1, :amount => '10%'
+			ps.delete_cart_rule id
 		end
 	end
 
@@ -76,13 +111,4 @@ describe 'Back Office Primitives' do
 		end
 	end
 
-end
-
-describe 'Front Office Primitives' do
-		it 'should login' do
-			ps.login_to_front_office
-		end
-		it 'should logout' do
-			ps.logout_of_front_office
-		end
 end

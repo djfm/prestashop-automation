@@ -39,5 +39,13 @@ module PrestaShopAutomation
 		def standard_success_check
 			expect_to have_selector '.alert.alert-success'
 		end
+
+		def visit base, rest=nil
+			if rest == nil
+				super base
+			else
+				super base.sub(/\/\s*/, '') + rest.sub(/^\s*\//, '')
+			end
+		end
 	end
 end

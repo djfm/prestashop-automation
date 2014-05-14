@@ -7,6 +7,7 @@ require_relative 'actions/products.rb'
 require_relative 'actions/taxes.rb'
 require_relative 'actions/carriers.rb'
 require_relative 'actions/cart_rules.rb'
+require_relative 'actions/orders.rb'
 
 require_relative 'helpers/general.rb'
 
@@ -25,6 +26,7 @@ module PrestaShopAutomation
         include PrestaShopAutomation::TaxesActions
         include PrestaShopAutomation::CarriersActions
         include PrestaShopAutomation::CartRulesActions
+		include PrestaShopAutomation::OrdersActions
 
 		def initialize options
 
