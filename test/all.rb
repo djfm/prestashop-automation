@@ -1,4 +1,4 @@
-require_relative '../lib/prestashop.rb'
+require_relative '../lib/prestashop-automation.rb'
 
 ps = PrestaShopAutomation::PrestaShop.new({
 	:back_office_url => 'http://localhost/1.6/admin-dev/',
