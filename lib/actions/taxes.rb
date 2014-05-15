@@ -32,10 +32,10 @@ module PrestaShopAutomation
 			return current_url[/\bid_tax_rules_group=(\d+)/, 1].to_i
 		end
 
-		def create_tax_group_from_rate rate
+		def create_tax_group_from_rate rate, taxes_pool={}
 			if /^(?:\d+(?:.\d+)?)$/ =~ rate.to_s
 				tax_id = create_tax :name => "#{rate}% Tax (Rate)", :rate => rate
-				create_tax_group :name => "#{rate}% Tax (Group)", :taxes => [{:tax_id => tax_id}]
+				taxes_pool[rate] ||= create_tax_group :name => "#{rate}% Tax (Group)", :taxes => [{:tax_id => tax_id}]
 			elsif /(?:\d+(?:.\d+)?)(?:\s*(?:\+|\*)\s*(?:\d+(?:.\d+)?))+/ =~ rate
 				taxes = []
 				combine = {'+' => :sum, '*' => :multiply}[rate[/(\+|\*)/, 1]] || :no
@@ -45,7 +45,7 @@ module PrestaShopAutomation
 					elsif token == '*'
 						combine = :multiply
 					else
-						tax_id = create_tax :name => "#{token}% Tax (Rate)", :rate => token
+						tax_id = taxes_pool[rate] ||= (create_tax :name => "#{token}% Tax (Rate)", :rate => token)
 						taxes << {
 							:tax_id => tax_id,
 							:combine => combine
