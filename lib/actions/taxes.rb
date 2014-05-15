@@ -33,7 +33,7 @@ module PrestaShopAutomation
 		end
 
 		def create_tax_group_from_rate rate
-			if /^(?:\d+(?:.\d+)?)$/ =~ rate
+			if /^(?:\d+(?:.\d+)?)$/ =~ rate.to_s
 				tax_id = create_tax :name => "#{rate}% Tax (Rate)", :rate => rate
 				create_tax_group :name => "#{rate}% Tax (Group)", :taxes => [{:tax_id => tax_id}]
 			elsif /(?:\d+(?:.\d+)?)(?:\s*(?:\+|\*)\s*(?:\d+(?:.\d+)?))+/ =~ rate

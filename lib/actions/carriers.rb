@@ -89,6 +89,8 @@ module PrestaShopAutomation
 			sleep 4 #this wait seems necessary, strange
 			click 'a.buttonFinish'
 			standard_success_check
+
+			return options[:name]
 		end
 	end
 end

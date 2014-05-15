@@ -12,7 +12,7 @@ module PrestaShopAutomation
 			standard_success_check
 		end
 
-		def set_gift_wrapping_option on, options
+		def set_gift_wrapping_option on, options={}
 			goto_admin_tab 'AdminOrderPreferences'
 			if on
 				click_label_for 'PS_GIFT_WRAPPING_on'

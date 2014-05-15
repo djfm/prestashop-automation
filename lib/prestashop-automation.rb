@@ -14,6 +14,7 @@ require_relative 'actions/installer.rb'
 require_relative 'helpers/general.rb'
 
 module PrestaShopAutomation
+
 	class PrestaShop < Capybara::Session
 
         include RSpec::Expectations
@@ -48,6 +49,8 @@ module PrestaShopAutomation
 			@database_host = options[:database_host] || 'localhost'
             @filesystem_path = options[:filesystem_path]
 			@version = options[:version]
+
+			@dumps = []
 
 			super :selenium
 		end
@@ -88,6 +91,36 @@ module PrestaShopAutomation
 			cmd += "< #{Shellwords.shellescape src}"
 			`#{cmd}`
 			return $?.success?
+		end
+
+		def clear_cookies
+			reset!
+		end
+
+		def save
+			out = {
+				:database => nil,
+				:files => nil
+			}
+
+			if database_exists
+				out[:database] = Tempfile.new 'prestashop-db'
+				dump_database out[:database].path
+			end
+
+			@dumps << out
+
+			return out
+		end
+
+		def restore dump=nil
+			unless dump
+				dump = @dumps.pop
+			end
+
+			if dump[:database]
+				load_database dump[:database].path
+			end
 		end
 
 	end

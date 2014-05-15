@@ -60,7 +60,7 @@ module PrestaShopAutomation
 
 			if options[:get_invoice_json]
 				visit pdf_url+'&debug=1'
-				return JSON.parse(page.find('body').text)
+				return JSON.parse(find('body').text)
 			end
 		end
 	end
