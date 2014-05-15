@@ -53,11 +53,13 @@ module PrestaShopAutomation
 		end
 
 		def visit base, rest=nil
-			if rest == nil
-				super base
+			url = if rest == nil
+				base
 			else
-				super base.sub(/\/\s*/, '') + rest.sub(/^\s*\//, '')
+				base.sub(/\/\s*/, '') + rest.sub(/^\s*\//, '')
 			end
+
+			super url
 		end
 
 		def wait_until options = {}, &block
