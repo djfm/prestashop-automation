@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module PrestaShopAutomation
 	module OrdersActions
 
@@ -52,7 +54,7 @@ module PrestaShopAutomation
 			pdf_url = find('a[href*="generateInvoicePDF"]')['href']
 
 			if options[:dump_pdf_to]
-				all_cookies = page.driver.browser.manage.all_cookies
+				all_cookies = driver.browser.manage.all_cookies
 				cookies = all_cookies.map do |c| "#{c[:name]}=#{c[:value]}" end.join ";"
 					cmd = "curl --url #{Shellwords.shellescape pdf_url} -b \"#{cookies}\" -o #{Shellwords.shellescape options[:dump_pdf_to]} 2>/dev/null"
 					`#{cmd}` #download the PDF
