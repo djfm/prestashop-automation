@@ -1,6 +1,20 @@
 module PrestaShopAutomation
 	module SettingsActions
 
+		def set_rounding_rule option
+			goto_admin_tab 'AdminTaxes'
+
+			value = {:item => 1, :line => 2, :total => 3}[option.to_sym]
+
+			if value
+				select_by_value '#PS_TAX_ROUND_TYPE', value
+				click_button_named 'submitOptionstax', :first => true
+				standard_success_check
+			else
+				throw "Unsupported option: #{option}"
+			end
+		end
+
 		def set_friendly_urls on
 			goto_admin_tab 'AdminMeta'
 			if on
