@@ -15,7 +15,9 @@ module PrestaShopAutomation
 			click '#btNext'
 
 			fill_in 'infosShop', :with => options[:shop_name] || @database_name
-			find("input[name='db_mode'][value='#{options[:no_demo_products] ? 'lite' : 'full'}']").click
+			if has_selector? "input[name='db_mode']"
+				find("input[name='db_mode'][value='#{options[:no_demo_products] ? 'lite' : 'full'}']").click
+			end
 			select_by_value_jqChosen '#infosCountry', options[:country] || 'us'
 
 			if options[:timezone]
