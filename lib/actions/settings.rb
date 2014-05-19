@@ -15,6 +15,29 @@ module PrestaShopAutomation
 			end
 		end
 
+		def set_rounding_method option
+			mapping = {
+				up: 0,
+				down: 1,
+				half_up: 2,
+				half_down: 3,
+				half_even: 4,
+				half_odd: 5
+			}
+
+			goto_admin_tab 'AdminTaxes'
+			value = mapping[option.to_sym]
+
+			if value
+				goto_admin_tab 'AdminPreferences'
+				select_by_value '#PS_PRICE_ROUND_MODE', value
+				click_button_named 'submitOptionsconfiguration', :first => true
+				standard_success_check
+			else
+				throw "Unsupported option: #{option}"
+			end
+		end
+
 		def set_friendly_urls on
 			goto_admin_tab 'AdminMeta'
 			if on

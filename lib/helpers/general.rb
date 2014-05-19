@@ -56,7 +56,7 @@ module PrestaShopAutomation
 			url = if rest == nil
 				base
 			else
-				base.sub(/\/\s*/, '') + rest.sub(/^\s*\//, '')
+				base.sub(/\/\s*$/, '') + '/' + rest.sub(/^\s*\//, '')
 			end
 
 			super url

@@ -21,6 +21,12 @@ describe 'Back Office Primitives' do
 
 	describe 'Changing a few settings' do
 
+		[:up, :down, :half_up, :half_down, :half_even, :half_odd].each do |mode|
+			it "should set rounding rule to #{mode}" do
+				ps.set_rounding_method mode
+			end
+		end
+
 		[:item, :line, :total].each do |mode|
 			it "should set rounding rule to #{mode}" do
 				ps.set_rounding_rule mode

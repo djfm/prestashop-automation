@@ -32,10 +32,15 @@ module PrestaShopAutomation
 			return current_url[/\bid_tax_rules_group=(\d+)/, 1].to_i
 		end
 
-		def create_tax_group_from_rate rate, taxes_pool={}
+		def create_tax_group_from_rate rate, taxes_pool={}, groups_pool={}
+
+			if groups_pool[rate]
+				return groups_pool[rate]
+			end
+
 			if /^(?:\d+(?:.\d+)?)$/ =~ rate.to_s
-				tax_id = create_tax :name => "#{rate}% Tax (Rate)", :rate => rate
-				taxes_pool[rate] ||= create_tax_group :name => "#{rate}% Tax (Group)", :taxes => [{:tax_id => tax_id}]
+				tax_id = taxes_pool[rate] ||= (create_tax :name => "#{rate}% Tax (Rate)", :rate => rate)
+				groups_pool[rate] = create_tax_group :name => "#{rate}% Tax (Group)", :taxes => [{:tax_id => tax_id}]
 			elsif /(?:\d+(?:.\d+)?)(?:\s*(?:\+|\*)\s*(?:\d+(?:.\d+)?))+/ =~ rate
 				taxes = []
 				combine = {'+' => :sum, '*' => :multiply}[rate[/(\+|\*)/, 1]] || :no
@@ -52,7 +57,7 @@ module PrestaShopAutomation
 						}
 					end
 				end
-				create_tax_group :name => "Composite #{rate} Tax (Group)", :taxes => taxes
+				groups_pool[rate] = create_tax_group :name => "Composite #{rate} Tax (Group)", :taxes => taxes
 			else
 				throw "Invalid tax rate format: #{rate}"
 			end
