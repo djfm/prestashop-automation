@@ -21,6 +21,14 @@ describe 'Back Office Primitives' do
 
 	describe 'Changing a few settings' do
 
+		it "should enable ecotax" do
+			ps.set_ecotax_option true, 52
+		end
+
+		it "should disable ecotax" do
+			ps.set_ecotax_option false
+		end
+
 		[:up, :down, :half_up, :half_down, :half_even, :half_odd].each do |mode|
 			it "should set rounding rule to #{mode}" do
 				ps.set_rounding_method mode

@@ -70,5 +70,19 @@ module PrestaShopAutomation
 			standard_success_check
 		end
 
+		def set_ecotax_option on, tax_group_id=nil
+			goto_admin_tab 'AdminTaxes'
+			click_label_for "PS_USE_ECOTAX_#{onoff on}"
+			click_button_named 'submitOptionstax', :first => true
+			standard_success_check
+
+			if on and tax_group_id
+				sleep 1
+				select_by_value '#PS_ECOTAX_TAX_RULES_GROUP_ID', tax_group_id
+				click_button_named 'submitOptionstax', :first => true
+				standard_success_check
+			end
+		end
+
 	end
 end

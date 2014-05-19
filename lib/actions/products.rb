@@ -18,6 +18,10 @@ module PrestaShopAutomation
 				select_by_value '#id_tax_rules_group', options[:tax_group_id]
 			end
 
+			if options[:ecotax]
+				fill_in 'ecotax', :with => options[:ecotax]
+			end
+
 			if sp = options[:specific_price]
 				save_product
 
