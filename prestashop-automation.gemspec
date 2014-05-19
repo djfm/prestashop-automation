@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name = 'prestashop-automation'
-	s.version = '0.6'
+	s.version = '0.6.1'
 	s.date = '2014-05-14'
 	s.description = "A nice ruby framework to build complex selenium tests around PrestaShop.\nThis gem provides building blocks to create advanced scenarios in a very consise way."
 	s.summary = 'Framework to test and automate tasks in PrestaShop.'
