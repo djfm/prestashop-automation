@@ -7,6 +7,12 @@ module PrestaShopAutomation
 			value = {:item => 1, :line => 2, :total => 3}[option.to_sym]
 
 			if value
+
+				if !has_selector? '#PS_TAX_ROUND_TYPE' and option.to_sym == :line
+					#we don't have the option, but we asked for the default, so that's OK
+					return
+				end
+
 				select_by_value '#PS_TAX_ROUND_TYPE', value
 				click_button_named 'submitOptionstax', :first => true
 				standard_success_check
