@@ -4,6 +4,11 @@ module PrestaShopAutomation
 			goto_admin_tab 'AdminCarriers'
 			find('#page-header-desc-carrier-new_carrier').click
 
+			#some versions have an additional step
+			if has_selector? 'a.btn[href*="controller=AdminCarrierWizard"]'
+				click 'a.btn[href*="controller=AdminCarrierWizard"]'
+			end
+
 			fill_in 'name', :with => options[:name]
 			fill_in 'delay_1', :with => options[:delay] || 'Turtle'
 			fill_in 'grade', :with => options[:grade] if options[:grade]

@@ -64,6 +64,32 @@ module PrestaShopAutomation
 			end
 		end
 
+		def add_module_from_repo repo, branch=nil
+			b = branch ? ['-b', branch] : []
+			unless system 'git', 'clone', repo, *b, :chdir => File.join(@filesystem_path, 'modules')
+				throw "Could not clone '#{repo}' into '#{@filesystem_path}'"
+			end
+		end
+
+		def install_module name
+			goto_admin_tab 'AdminModules'
+			link = first("a[href*='install='][href*='controller=AdminModules']", :visible => false)['href']
+			randomname = link[/\binstall=([^&?#]+)/, 1]
+			link.gsub! randomname, name
+			visit link
+			#check that the entry was added to the DB
+			expect(client.query("SELECT * FROM #{safe_database_name}.#{@database_prefix}module WHERE name='#{client.escape name}'").count).to be 1
+		end
+
+		def update_all_modules
+			goto_admin_tab 'AdminModules'
+			if has_selector? '#desc-module-update-all'
+				click '#desc-module-update-all'
+				goto_admin_tab 'AdminModules'
+				expect_to have_selector '#desc-module-check-and-update-all'
+			end
+		end
+
 		def drop_database
 			client.query("DROP DATABASE IF EXISTS #{safe_database_name}")
 		end

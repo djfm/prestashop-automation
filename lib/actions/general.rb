@@ -51,15 +51,27 @@ module PrestaShopAutomation
 			@logged_in_to_front_office_as = nil
 		end
 
-		def goto_admin_tab tab
-			links = Hash[all('ul.menu a', :visible => false).to_a.keep_if do |a|
+		def get_menu
+			Hash[all('ul.menu a', :visible => false).to_a.keep_if do |a|
 				a['href'] =~ /\?controller=/
 			end.map do |a|
 				[a['href'][/\?controller=(.+?)\b/, 1], a['href']]
 			end]
+		end
+
+		def goto_admin_tab tab
+			links = get_menu
 			expect(links[tab]).not_to eq nil
 			visit links[tab]
 			expect(current_url).to match /\bcontroller=#{tab}\b/
+		end
+
+		def goto_module_configuration name
+			goto_admin_tab 'AdminModules'
+			link = first("a[href*='configure='][href*='controller=AdminModules']", :visible => false)['href']
+			randomname = link[/\bconfigure=([^&?#]+)/, 1]
+			link.gsub! randomname, name
+			visit link
 		end
 	end
 end
