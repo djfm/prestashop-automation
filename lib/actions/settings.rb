@@ -2,18 +2,18 @@ module PrestaShopAutomation
 	module SettingsActions
 
 		def set_rounding_rule option
-			goto_admin_tab 'AdminTaxes'
+			goto_admin_tab 'AdminPreferences'
 
 			value = {:item => 1, :line => 2, :total => 3}[option.to_sym]
 
 			if value
 
-				if !has_selector? '#PS_TAX_ROUND_TYPE' and option.to_sym == :line
+				if !has_selector? '#PS_ROUND_TYPE' and option.to_sym == :line
 					#we don't have the option, but we asked for the default, so that's OK
 					return
 				end
 
-				select_by_value '#PS_TAX_ROUND_TYPE', value
+				select_by_value '#PS_ROUND_TYPE', value
 				click_button_named 'submitOptionstax', :first => true
 				standard_success_check
 			else
