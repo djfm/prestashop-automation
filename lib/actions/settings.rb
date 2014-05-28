@@ -14,7 +14,7 @@ module PrestaShopAutomation
 				end
 
 				select_by_value '#PS_ROUND_TYPE', value
-				click_button_named 'submitOptionstax', :first => true
+				click_button_named 'submitOptionsconfiguration', :first => true
 				standard_success_check
 			else
 				throw "Unsupported option: #{option}"
@@ -83,7 +83,7 @@ module PrestaShopAutomation
 			standard_success_check
 
 			if on and tax_group_id
-				sleep 1
+				goto_admin_tab 'AdminTaxes' #for some reason, we need to refresh here
 				select_by_value '#PS_ECOTAX_TAX_RULES_GROUP_ID', tax_group_id
 				click_button_named 'submitOptionstax', :first => true
 				standard_success_check
