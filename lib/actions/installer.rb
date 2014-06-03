@@ -63,8 +63,10 @@ module PrestaShopAutomation
 				has_selector? 'a.BO' and has_selector? 'a.FO'
 			end
 
-			login_to_back_office
-			login_to_front_office
+			if options[:paranoid]
+				login_to_back_office
+				login_to_front_office
+			end
 		end
 
 		def add_module_from_repo repo, branch=nil
