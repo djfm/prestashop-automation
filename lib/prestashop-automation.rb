@@ -1,4 +1,4 @@
-require 'rspec-expectations'
+require 'rspec'
 require 'capybara'
 require 'shellwords'
 
@@ -19,7 +19,6 @@ module PrestaShopAutomation
 
         include RSpec::Expectations
         include RSpec::Matchers
-        #include Capybara::RSpecMatchers
 
 		include PrestaShopAutomation::GeneralHelpers
 
@@ -31,6 +30,11 @@ module PrestaShopAutomation
         include PrestaShopAutomation::CartRulesActions
 		include PrestaShopAutomation::OrdersActions
         include PrestaShopAutomation::InstallerActions
+
+		# Rspec defines this method, but we want the one from  Capybara::Session
+		def all *args
+			Capybara::Session.instance_method(:all).bind(self).call *args
+		end
 
 		def initialize options
 

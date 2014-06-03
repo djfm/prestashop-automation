@@ -62,6 +62,9 @@ module PrestaShopAutomation
 			wait_until do
 				has_selector? 'a.BO' and has_selector? 'a.FO'
 			end
+
+			login_to_back_office
+			login_to_front_office
 		end
 
 		def add_module_from_repo repo, branch=nil
@@ -81,12 +84,14 @@ module PrestaShopAutomation
 			expect(client.query("SELECT * FROM #{safe_database_name}.#{@database_prefix}module WHERE name='#{client.escape name}'").count).to be 1
 		end
 
-		def update_all_modules
+		def update_all_modules strict=false
 			goto_admin_tab 'AdminModules'
 			if has_selector? '#desc-module-update-all'
 				click '#desc-module-update-all'
-				goto_admin_tab 'AdminModules'
-				expect_to have_selector '#desc-module-check-and-update-all'
+				if strict
+					goto_admin_tab 'AdminModules'
+					expect_to have_selector '#desc-module-check-and-update-all'
+				end
 			end
 		end
 
