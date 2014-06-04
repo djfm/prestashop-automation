@@ -1,6 +1,7 @@
 require 'rspec'
 require 'capybara'
 require 'shellwords'
+require 'selenium/webdriver'
 
 require_relative 'actions/general.rb'
 require_relative 'actions/settings.rb'
@@ -16,6 +17,15 @@ require_relative 'helpers/general.rb'
 module PrestaShopAutomation
 
 	class PrestaShop < Capybara::Session
+
+		unless @drivers_defined
+			Capybara.register_driver :selenium_with_long_timeout do |app|
+			  client = Selenium::WebDriver::Remote::Http::Default.new
+			  client.timeout = 300
+			  Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client)
+			end
+			@drivers_defined = true
+		end
 
         include RSpec::Expectations
         include RSpec::Matchers
@@ -56,7 +66,7 @@ module PrestaShopAutomation
 
 			@dumps = []
 
-			super :selenium
+			super :selenium_with_long_timeout
 		end
 
         def quit
