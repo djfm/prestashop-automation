@@ -32,10 +32,8 @@ module PrestaShopAutomation
 		def login_to_front_office
 			visit @front_office_url
 			click 'a.login'
-			within '#login_form' do
-				fill_in 'email', :with => @default_customer_email
-				fill_in 'passwd', :with => @default_customer_password
-			end
+			find('#email').set @default_customer_email
+			find('#passwd').set @default_customer_password
 			click '#SubmitLogin'
 			expect_to have_selector('p.info-account')
 			@logged_in_to_front_office_as = {
