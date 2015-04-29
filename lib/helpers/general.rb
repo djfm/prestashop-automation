@@ -89,5 +89,9 @@ module PrestaShopAutomation
 		def get_cookies_string
 			driver.browser.manage.all_cookies.map do |c| "#{c[:name]}=#{c[:value]}" end.join ";"
 		end
+
+		def version_gte v
+			Gem::Version.new(@version.dup) >= Gem::Version.new(v.dup)
+		end
 	end
 end
