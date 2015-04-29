@@ -24,6 +24,18 @@ module PrestaShopAutomation
 			end
 		end
 
+		def get_select_options select_selector
+			all("#{select_selector} option", :visible => false).to_a.map do |option|
+				[option[:value], option.text]
+			end
+		end
+
+		def select_random_option select_selector
+			option = get_select_options(select_selector).sample[0]
+			puts "Option: #{option}"
+			select_by_value select_selector, option
+		end
+
 		def select_by_value_jqChosen select_selector, value
 			options = Hash[all("#{select_selector} option", :visible => false).to_a.each_with_index.map do |option, i|
 				[option['value'], i]
