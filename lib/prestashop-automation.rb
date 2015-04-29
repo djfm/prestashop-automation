@@ -11,6 +11,7 @@ require_relative 'actions/carriers.rb'
 require_relative 'actions/cart_rules.rb'
 require_relative 'actions/orders.rb'
 require_relative 'actions/installer.rb'
+require_relative 'actions/users.rb'
 
 require_relative 'helpers/general.rb'
 
@@ -40,6 +41,7 @@ module PrestaShopAutomation
         include PrestaShopAutomation::CartRulesActions
 		include PrestaShopAutomation::OrdersActions
         include PrestaShopAutomation::InstallerActions
+        include PrestaShopAutomation::UsersActions
 
 		# Rspec defines this method, but we want the one from  Capybara::Session
 		def all *args
