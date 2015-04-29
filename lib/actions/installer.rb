@@ -78,9 +78,17 @@ module PrestaShopAutomation
 
 		def install_module name
 			goto_admin_tab 'AdminModules'
-			link = first("a[href*='install='][href*='controller=AdminModules']", :visible => false)['href']
-			randomname = link[/\binstall=([^&?#]+)/, 1]
-			link.gsub! randomname, name
+			if version_gte '1.6.0.7'
+				link = first("a[data-link*='&install='][data-link*='controller=AdminModules']", :visible => false)['data-link']
+				randomname = link[/\binstall=([^&?#]+)/, 1]
+				link.gsub! randomname, name
+				link = @back_office_url + link
+				puts link
+			else
+				link = first("a[href*='&install='][href*='controller=AdminModules']", :visible => false)['href']
+				randomname = link[/\binstall=([^&?#]+)/, 1]
+				link.gsub! randomname, name
+			end
 			visit link
 			#check that the entry was added to the DB
 			expect(client.query("SELECT * FROM #{safe_database_name}.#{@database_prefix}module WHERE name='#{client.escape name}'").count).to be 1
