@@ -31,10 +31,12 @@ module PrestaShopAutomation
 			fill_in 'infosPassword', :with => password
 			fill_in 'infosPasswordRepeat', :with => password
 
-			if options[:newsletter]
-				check 'infosNotification'
-			else
-				uncheck 'infosNotification'
+			if has_selector? "#infosNotification"
+				if options[:newsletter]
+					check 'infosNotification'
+				else
+					uncheck 'infosNotification'
+				end
 			end
 
 			click '#btNext'
