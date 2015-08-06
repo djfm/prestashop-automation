@@ -80,7 +80,10 @@ module PrestaShopAutomation
 
 		def install_module name
 			goto_admin_tab 'AdminModules'
-			if version_gte '1.6.0.7'
+
+			recent = version_gte('1.6.0.7') rescue true
+
+			if recent
 				link = first("a[data-link*='&install='][data-link*='controller=AdminModules']", :visible => false)['data-link']
 				randomname = link[/\binstall=([^&?#]+)/, 1]
 				link.gsub! randomname, name
