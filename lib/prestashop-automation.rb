@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require 'rspec'
 require 'capybara'
 require 'shellwords'
