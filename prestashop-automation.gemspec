@@ -12,6 +12,6 @@ Gem::Specification.new do |s|
 
 	s.add_runtime_dependency 'mysql2', '~> 0'
 	s.add_runtime_dependency 'selenium-webdriver', '~> 2.48', '>= 2.48.1'
-	s.add_runtime_dependency 'capybara', '~> 0'
+	s.add_runtime_dependency 'capybara', '~> 2.5', '>= 2.5.0'
 	s.add_runtime_dependency 'rspec', '~> 3.4', '>= 3.4.0'
 end
